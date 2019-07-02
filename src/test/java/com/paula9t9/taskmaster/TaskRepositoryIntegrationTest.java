@@ -40,7 +40,6 @@ public class TaskRepositoryIntegrationTest {
         dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
         CreateTableRequest tableRequest = dynamoDBMapper.generateCreateTableRequest(Task.class);
         tableRequest.setProvisionedThroughput(new ProvisionedThroughput(1L, 1L));
-        dynamoDBMapper.batchDelete(repository.findAll());
     }
 
     @Test
@@ -59,4 +58,6 @@ public class TaskRepositoryIntegrationTest {
     public void testMath(){
         assertTrue("should be true",true);
     }
+
+
 }
