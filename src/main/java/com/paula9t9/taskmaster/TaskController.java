@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
@@ -43,6 +40,7 @@ public class TaskController {
         return new ResponseEntity(newTask, HttpStatus.OK);
     }
 
+    //Update the state of a task
     @PutMapping("tasks/{id}/state")
     public ResponseEntity putState(@PathVariable String id){
         //get task with id
@@ -63,10 +61,26 @@ public class TaskController {
         return new ResponseEntity(task, HttpStatus.OK);
     }
 
+    //Get all tasks for a particular user
     @GetMapping("/users/{name}/tasks")
     public ResponseEntity getUserTasks(@PathVariable String name){
         List<Task> results = taskRepository.findByAssignee(name);
 
         return new ResponseEntity(results, HttpStatus.OK);
     }
+
+    //Change the assigned user on a task
+    @PatchMapping("tasks/{id}/assign/{assignee}")
+    public ResponseEntity updateAssignee(@PathVariable String id, @PathVariable String assignee){
+        //TODO: catch 405 error if no task by that id, also update in other routes
+        Task task = taskRepository.findById(id).get();
+
+        task.setAssignee(assignee);
+
+        taskRepository.save(task);
+
+        return new ResponseEntity(task, HttpStatus.OK);
+
+    }
+
 }
