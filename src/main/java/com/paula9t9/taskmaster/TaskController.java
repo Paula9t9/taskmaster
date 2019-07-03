@@ -25,13 +25,22 @@ public class TaskController {
         return new ResponseEntity(results, HttpStatus.OK);
     }
 
+    //Save new tasks to the database
     @PostMapping("/tasks")
-    public RedirectView postTasks(String title, String description){
-        Task newTask = new Task(title, description);
+    public ResponseEntity postTasks(String title, String description, String assignee){
+
+        //If there is no assignee, use the appropriate constructor
+        Task newTask;
+        if(assignee == null){
+            newTask = new Task(title, description);
+        }else {
+            newTask = new Task(title, description, assignee);
+        }
+
 
         taskRepository.save(newTask);
 
-        return new RedirectView("/tasks");
+        return new ResponseEntity(newTask, HttpStatus.OK);
     }
 
     @PutMapping("tasks/{id}/state")
@@ -52,5 +61,12 @@ public class TaskController {
         taskRepository.save(task);
 
         return new ResponseEntity(task, HttpStatus.OK);
+    }
+
+    @GetMapping("/users/{name}/tasks")
+    public ResponseEntity getUserTasks(@PathVariable String name){
+        List<Task> results = taskRepository.findByAssignee(name);
+
+        return new ResponseEntity(results, HttpStatus.OK);
     }
 }
