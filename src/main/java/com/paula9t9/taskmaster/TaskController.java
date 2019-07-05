@@ -15,6 +15,8 @@ public class TaskController {
     @Autowired
     TaskRepository taskRepository;
 
+    //Display all tasks in db
+    @CrossOrigin
     @GetMapping("/tasks")
     public ResponseEntity getTasks(){
         List<Task> results = (List<Task>) taskRepository.findAll();
