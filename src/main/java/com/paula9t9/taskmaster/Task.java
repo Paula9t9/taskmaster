@@ -17,6 +17,7 @@ public class Task {
     private String description;
     private String status;
     private String assignee;
+    private String imageUrl;
 
     public Task() { }
 
@@ -89,5 +90,13 @@ public class Task {
         taskString.append(this.description);
 
         return taskString.toString();
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
