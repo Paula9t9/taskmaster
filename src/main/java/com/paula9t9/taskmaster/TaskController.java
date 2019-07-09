@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
@@ -12,9 +13,16 @@ import java.util.List;
 @Controller
 public class TaskController {
 
+
+    @Autowired
+    S3Client s3Client;
+
     @Autowired
     TaskRepository taskRepository;
 
+
+    //Display all tasks in db
+    @CrossOrigin
     @GetMapping("/tasks")
     public ResponseEntity getTasks(){
         List<Task> results = (List<Task>) taskRepository.findAll();
@@ -38,6 +46,17 @@ public class TaskController {
         taskRepository.save(newTask);
 
         return new ResponseEntity(newTask, HttpStatus.OK);
+    }
+
+    @PostMapping("/tasks/{id}/images")
+    public ResponseEntity postImages(@PathVariable String id, @RequestPart(value = "file")MultipartFile multipartFile){
+        Task task = taskRepository.findById(id).get();
+
+        String pic = this.s3Client.uploadFile(multipartFile);
+        task.setImageUrl(pic);
+        taskRepository.save(task);
+        return new ResponseEntity(task, HttpStatus.OK);
+
     }
 
     //Update the state of a task
@@ -82,5 +101,7 @@ public class TaskController {
         return new ResponseEntity(task, HttpStatus.OK);
 
     }
+
+
 
 }
