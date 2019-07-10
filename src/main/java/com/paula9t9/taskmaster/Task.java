@@ -18,6 +18,7 @@ public class Task {
     private String status;
     private String assignee;
     private String imageUrl;
+    private String thumbnailUrl;
 
     public Task() { }
 
@@ -98,5 +99,13 @@ public class Task {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 }
