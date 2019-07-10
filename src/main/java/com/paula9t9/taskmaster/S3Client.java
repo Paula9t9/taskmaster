@@ -60,6 +60,8 @@ public class S3Client {
     }
 
     private void uploadFileToS3Bucket(String fileName, File file) {
+        //add folder path to filename so S3 saves it to that folder
+        fileName = "incoming/" + fileName;
         s3Client.putObject(new PutObjectRequest(bucket, fileName, file)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
     }
