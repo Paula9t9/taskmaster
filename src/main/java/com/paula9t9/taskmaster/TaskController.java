@@ -30,6 +30,15 @@ public class TaskController {
         return new ResponseEntity(results, HttpStatus.OK);
     }
 
+    //Display a particular task
+    @CrossOrigin
+    @GetMapping("/tasks/{id}")
+    public ResponseEntity getTasks(@PathVariable String id){
+        Task task = taskRepository.findById(id).get();
+
+        return new ResponseEntity(task, HttpStatus.OK);
+    }
+
     //Save new tasks to the database
     @PostMapping("/tasks")
     public ResponseEntity postTasks(String title, String description, String assignee){
